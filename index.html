@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Halyq Bank | Оразалы Карабай Госманулы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ========== СТИЛИ ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f8;
+            color: #121826;
+            line-height: 1.5;
+        }
+        :root {
+            --primary: #0057b3;
+            --primary-dark: #003d82;
+            --primary-light: #e6f0ff;
+            --accent: #00a86b;
+            --warning: #f5a623;
+            --danger: #e85d5d;
+            --card-bg: #ffffff;
+            --text-muted: #5a6874;
+            --border-light: #eef2f6;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .navbar {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 1px 0 var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 0;
+        }
+        .nav-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.7rem;
+            letter-spacing: -0.4px;
+        }
+        .logo i { color: var(--primary); font-size: 1.8rem; }
+        .logo span {
+            background: linear-gradient(135deg, #0057b3, #0088a9);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e4e;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 6px 12px;
+            border-radius: 40px;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .btn-outline {
+            border: 1px solid var(--border-light);
+            background: white;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0,87,179,0.2);
+        }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-primary:disabled { background: #b0c4de; cursor: not-allowed; transform: none; }
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .access-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            margin: 20px 0 32px;
+            padding: 24px 28px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-left: 5px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+        .access-input-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        #accessCodeInput {
+            padding: 12px 20px;
+            border-radius: 60px;
+            border: 1px solid var(--border-light);
+            font-size: 1rem;
+            min-width: 220px;
+        }
+        .balance-main { font-size: 2.2rem; font-weight: 800; color: #1a2c3e; }
+        .greeting-card {
+            background: linear-gradient(125deg, #ffffff 0%, #fafcff 100%);
+            border-radius: var(--radius-xl);
+            padding: 28px 32px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+        .product-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: 0.2s;
+        }
+        .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .loan-calc {
+            background: #f8fafd;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .form-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+        .form-group { flex: 1; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 60px;
+            border: 1px solid var(--border-light);
+        }
+        .transaction-list { list-style: none; }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .success-message, .error-message {
+            padding: 12px;
+            border-radius: 60px;
+            margin-top: 16px;
+            display: none;
+        }
+        .success-message { background: #e0f7ec; color: #007a4d; }
+        .error-message { background: #fee9e6; color: #b13e3e; }
+        footer {
+            background: #0f172a;
+            color: #cddfe7;
+            padding: 48px 0 32px;
+            margin-top: 60px;
+            border-radius: 32px 32px 0 0;
+        }
+        @media (max-width: 760px) {
+            .greeting-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .nav-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-flex">
+        <div class="logo"><i class="fas fa-university"></i><span>Halyq Bank</span></div>
+        <div class="nav-links">
+            <a onclick="showSection('dashboard')" class="nav-link active" data-section="dashboard"><i class="fas fa-home"></i> Главная</a>
+            <a onclick="showSection('transfers')" class="nav-link" data-section="transfers"><i class="fas fa-exchange-alt"></i> Переводы</a>
+            <a onclick="showSection('credits')" class="nav-link" data-section="credits"><i class="fas fa-hand-holding-usd"></i> Кредиты</a>
+            <a onclick="showSection('deposits')" class="nav-link" data-section="deposits"><i class="fas fa-piggy-bank"></i> Депозиты</a>
+            <a onclick="showSection('cards')" class="nav-link" data-section="cards"><i class="fas fa-credit-card"></i> Карты</a>
+        </div>
+        <div><button class="btn-outline" id="profileBtn"><i class="fas fa-user-check"></i> Оразалы</button></div>
+    </div>
+</nav>
+
+<main class="container">
+    <!-- Блок доступа -->
+    <div class="access-card" id="accessBlock">
+        <div><i class="fas fa-fingerprint" style="color: #0057b3; font-size: 1.4rem;"></i> <strong>Доступ к операциям</strong>
+        <div class="access-status" id="accessStatusText">🔒 Требуется ввод кода доступа</div></div>
+        <div class="access-input-group">
+            <input type="password" id="accessCodeInput" placeholder="Введите код доступа" autocomplete="off">
+            <button class="btn-primary" id="unlockBtn">Подтвердить доступ</button>
+        </div>
+    </div>
+
+    <!-- === ГЛАВНАЯ / ДАШБОРД === -->
+    <div id="dashboardSection" class="section active">
+        <div class="greeting-card">
+            <div><h2>Қош келдіңіз, <span id="userFullName">Оразалы Карабай Госманулы</span> <i class="fas fa-hand-peace"></i></h2>
+            <p>Ваш персональный финансовый центр</p>
+            <div class="user-badge" style="background:#e6f0ff; padding:6px 14px; border-radius:60px; display:inline-block;"><i class="fas fa-star"></i> Premium-клиент</div></div>
+            <div style="background:white; border-radius:20px; padding:20px; text-align:right; min-width:240px;">
+                <div class="label">Основной счёт (KZT)</div>
+                <div class="balance-main" id="mainBalance">1 845 700 ₸</div>
+                <div><i class="fas fa-credit-card"></i> Оразалы К.Г.</div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="product-card"><i class="fas fa-chart-line" style="font-size:2rem; color:#0057b3;"></i><h3>Общая статистика</h3><p>Доход за месяц: +128 400 ₸</p><p>Кэшбэк: 5 230 ₸</p></div>
+            <div class="product-card"><i class="fas fa-clock" style="font-size:2rem; color:#0057b3;"></i><h3>Ближайший платёж</h3><p>Кредит: 12 500 ₸ до 28.02</p><button class="btn-outline" onclick="showSection('credits')">Оплатить</button></div>
+            <div class="product-card"><i class="fas fa-gift" style="font-size:2rem; color:#0057b3;"></i><h3>Акция</h3><p>Депозит "Надёжный" под 18% годовых</p></div>
+        </div>
+        <div class="transactions-section" style="background:white; border-radius:20px; padding:24px;">
+            <h3><i class="fas fa-history"></i> История операций</h3>
+            <ul class="transaction-list" id="transactionList">
+                <li class="transaction-item"><div><i class="fas fa-arrow-up"></i> Перевод на карту *5678</div><div><span style="color:#e85d5d;">-25 000 ₸</span><div class="transaction-date">Сегодня, 12:30</div></div></li>
+                <li class="transaction-item"><div><i class="fas fa-shopping-cart"></i> Magnum Cashback</div><div><span style="color:#00a86b;">+2 300 ₸</span><div class="transaction-date">Вчера, 18:10</div></div></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- === ПЕРЕВОДЫ === -->
+    <div id="transfersSection" class="section">
+        <div class="product-card" style="margin-top:20px;">
+            <h3><i class="fas fa-paper-plane"></i> Быстрый перевод</h3>
+            <div class="form-row"><div class="form-group"><input type="text" id="receiverPhone" placeholder="Номер получателя"></div>
+            <div class="form-group"><input type="number" id="transferAmount" placeholder="Сумма (₸)"></div></div>
+            <button class="btn-primary" id="doTransferBtn">Перевести</button>
+            <div id="transferMessage" class="error-message"></div><div id="transferSuccessMessage" class="success-message"></div>
+        </div>
+    </div>
+
+    <!-- === КРЕДИТЫ (полноценный калькулятор и оформление) === -->
+    <div id="creditsSection" class="section">
+        <div class="product-card">
+            <h3><i class="fas fa-hand-holding-usd"></i> Кредитные продукты</h3>
+            <div class="cards-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+                <div class="loan-calc"><h4>Потребительский кредит</h4><p>Ставка от 7,9%</p><p>Сумма до 5 млн ₸</p><button class="btn-outline" onclick="openCreditModal('consumer')">Оформить</button></div>
+                <div class="loan-calc"><h4>Ипотека</h4><p>Ставка от 5,5%</p><p>Срок до 25 лет</p><button class="btn-outline" onclick="openCreditModal('mortgage')">Рассчитать</button></div>
+                <div class="loan-calc"><h4>Автокредит</h4><p>Ставка от 6,9%</p><p>Первый взнос от 10%</p><button class="btn-outline" onclick="openCreditModal('auto')">Оформить</button></div>
+            </div>
+            <div class="loan-calc" style="margin-top:20px;"><h4>Кредитный калькулятор</h4>
+                <div class="form-row"><div class="form-group"><input type="number" id="loanAmount" placeholder="Сумма кредита (₸)"></div>
+                <div class="form-group"><input type="number" id="loanTerm" placeholder="Срок (мес)"></div></div>
+                <div class="form-group"><select id="loanType"><option value="12">Потребительский (12%)</option><option value="9">Ипотека (9%)</option><option value="15">Автокредит (15%)</option></select></div>
+                <button class="btn-primary" id="calcLoanBtn">Рассчитать платеж</button>
+                <div id="paymentResult" style="margin-top:16px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === ДЕПОЗИТЫ === -->
+    <div id="depositsSection" class="section">
+        <div class="product-card">
+            <h3><i class="fas fa-piggy-bank"></i> Вклады и депозиты</h3>
+            <div class="cards-grid">
+                <div><i class="fas fa-chart-simple"></i><h4>Сберегательный</h4><p>14% годовых</p><button class="btn-outline" onclick="openDepositModal(14)">Открыть</button></div>
+                <div><i class="fas fa-gem"></i><h4>Premium вклад</h4><p>18% годовых</p><button class="btn-outline" onclick="openDepositModal(18)">Открыть</button></div>
+                <div><i class="fas fa-coins"></i><h4>Детский депозит</h4><p>12% + бонус</p><button class="btn-outline" onclick="openDepositModal(12)">Открыть</button></div>
+            </div>
+            <div id="depositResult" style="margin-top:20px;"></div>
+        </div>
+    </div>
+
+    <!-- === КАРТЫ === -->
+    <div id="cardsSection" class="section">
+        <div class="product-card">
+            <h3><i class="fas fa-credit-card"></i> Цифровые карты</h3>
+            <div class="cards-grid">
+                <div><i class="fab fa-cc-visa"></i><h4>Visa Gold</h4><p>Кэшбэк 5%</p><button class="btn-primary" onclick="orderCard('Visa Gold')">Заказать</button></div>
+                <div><i class="fab fa-cc-mastercard"></i><h4>Mastercard Black</h4><p>Приоритетный проход</p><button class="btn-primary" onclick="orderCard('Mastercard Black')">Заказать</button></div>
+                <div><i class="fas fa-mobile-alt"></i><h4>Виртуальная карта</h4><p>Мгновенно</p><button class="btn-primary" onclick="orderCard('Виртуальная')">Выпустить</button></div>
+            </div>
+        </div>
+    </div>
+    <div style="background:#f9fafc; border-radius:28px; padding:20px; margin:20px 0;"><i class="fas fa-id-card"></i> <strong>Оразалы Карабай Госманулы</strong><br>Счёт: KZ86 1234 5678 9012 3456</div>
+</main>
+<footer><div class="container" style="text-align:center;">© 2025 Halyq Bank — Ваши финансы под защитой.</div></footer>
+
+<script>
+    // ========== КОНФИДЕНЦИАЛЬНО: Код доступа известен только владельцу ==========
+    const SECRET_CODE = "7410ABFI-3130";
+    let isAccessGranted = false;
+    let currentBalance = 1845700;
+    let transactions = [{desc:"Перевод на карту *5678", amount:-25000, date:new Date()},{desc:"Magnum Cashback", amount:2300, date:new Date()}];
+    
+    // DOM элементы
+    const balanceSpan = document.getElementById("mainBalance");
+    const accessInput = document.getElementById("accessCodeInput");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const accessStatusSpan = document.getElementById("accessStatusText");
+    const transactionList = document.getElementById("transactionList");
+    const doTransferBtn = document.getElementById("doTransferBtn");
+    const transferMessageDiv = document.getElementById("transferMessage");
+    const transferSuccessDiv = document.getElementById("transferSuccessMessage");
+    window.isAccessGranted = false;
+
+    function updateBalanceUI() { if(balanceSpan) balanceSpan.innerText = currentBalance.toLocaleString('ru-KZ') + " ₸"; }
+    function renderTransactions() {
+        if(!transactionList) return;
+        transactionList.innerHTML = transactions.slice(0,6).map(t => `<li class="transaction-item"><div><i class="fas ${t.amount>0 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i> ${t.desc}</div><div><span style="color:${t.amount>0?'#00a86b':'#e85d5d'};">${t.amount>0?'+':''}${t.amount.toLocaleString('ru-KZ')} ₸</span><div class="transaction-date">${new Date(t.date).toLocaleString('ru-KZ')}</div></div></li>`).join('');
+    }
+    function addTransaction(desc, amount) { transactions.unshift({desc, amount, date: new Date()}); renderTransactions(); }
+    
+    function grantAccess() {
+        if(accessInput.value.trim() === SECRET_CODE) {
+            isAccessGranted = window.isAccessGranted = true;
+            accessStatusSpan.innerHTML = "✅ Доступ открыт! Все операции разрешены.";
+            accessStatusSpan.style.color = "#007a4d";
+            unlockBtn.innerText = "Доступ подтверждён ✓";
+            unlockBtn.disabled = true;
+            accessInput.disabled = true;
+            alert("🔓 Добро пожаловать, Оразалы Карабай Госманулы!");
+            return true;
+        } else {
+            isAccessGranted = window.isAccessGranted = false;
+            accessStatusSpan.innerHTML = "❌ Неверный код доступа.";
+            accessStatusSpan.style.color = "#c73a3a";
+            return false;
+        }
+    }
+
+    function performTransfer() {
+        transferMessageDiv.style.display = "none"; transferSuccessDiv.style.display = "none";
+        if(!isAccessGranted) { transferMessageDiv.innerText = "🔐 Доступ закрыт! Введите код доступа."; transferMessageDiv.style.display = "block"; return; }
+        const phone = document.getElementById("receiverPhone")?.value.trim();
+        let amount = parseFloat(document.getElementById("transferAmount")?.value);
+        if(!phone || phone.length<9) { transferMessageDiv.innerText = "Введите корректный номер."; transferMessageDiv.style.display = "block"; return; }
+        if(isNaN(amount) || amount<=0) { transferMessageDiv.innerText = "Сумма должна быть >0."; transferMessageDiv.style.display = "block"; return; }
+        if(amount > currentBalance) { transferMessageDiv.innerText = `Недостаточно средств. Доступно: ${currentBalance.toLocaleString('ru-KZ')} ₸`; transferMessageDiv.style.display = "block"; return; }
+        currentBalance -= amount;
+        updateBalanceUI();
+        addTransaction(`Перевод на номер ${phone}`, -amount);
+        transferSuccessDiv.innerText = `✅ Перевод ${amount.toLocaleString('ru-KZ')} ₸ на ${phone} выполнен!`;
+        transferSuccessDiv.style.display = "block";
+        document.getElementById("transferAmount").value = "";
+        setTimeout(() => alert(`Перевод ${amount.toLocaleString('ru-KZ')} ₸ отправлен. Баланс: ${currentBalance.toLocaleString('ru-KZ')} ₸`), 100);
+    }
+
+    // Кредитный калькулятор
+    document.getElementById("calcLoanBtn")?.addEventListener("click", () => {
+        let amount = parseFloat(document.getElementById("loanAmount")?.value);
+        let term = parseFloat(document.getElementById("loanTerm")?.value);
+        let rate = parseFloat(document.getElementById("loanType")?.value);
+        if(isNaN(amount)||isNaN(term)||amount<=0||term<=0) { document.getElementById("paymentResult").innerText = "Введите корректные данные"; return; }
+        let monthlyRate = rate/100/12;
+        let payment = amount * monthlyRate * Math.pow(1+monthlyRate, term) / (Math.pow(1+monthlyRate, term)-1);
+        document.getElementById("paymentResult").innerHTML = `💰 Ежемесячный платёж: ${payment.toFixed(2)} ₸<br>Общая сумма: ${(payment*term).toFixed(2)} ₸`;
+    });
+
+    window.openCreditModal = (type) => {
+        if(!isAccessGranted) { alert("🔐 Требуется доступ. Введите код!"); return; }
+        alert(`📋 Заявка на ${type==='consumer'?'Потребительский кредит':type==='mortgage'?'Ипотеку':'Автокредит'} принята! Менеджер свяжется с вами.`);
+    };
+    window.openDepositModal = (rate) => {
+        if(!isAccessGranted) { alert("🔐 Требуется доступ."); return; }
+        let sum = prompt(`Введите сумму депозита (ставка ${rate}%):`, "100000");
+        if(sum && !isNaN(parseFloat(sum))) {
+            let profit = parseFloat(sum) * rate / 100;
+            alert(`✅ Депозит открыт! Сумма: ${parseFloat(sum).toLocaleString('ru-KZ')} ₸, доход за год: ${profit.toLocaleString('ru-KZ')} ₸`);
+            document.getElementById("depositResult").innerHTML = `<div class="success-message" style="display:block;">Депозит оформлен! Доход: ${profit.toLocaleString('ru-KZ')} ₸</div>`;
+        }
+    };
+    window.orderCard = (cardName) => {
+        if(!isAccessGranted) { alert("🔐 Требуется доступ."); return; }
+        alert(`💳 Карта "${cardName}" заказана! Ожидайте доставку 3-5 дней.`);
+    };
+
+    // Навигация
+    window.showSection = (sectionName) => {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(`${sectionName}Section`).classList.add('active');
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        event?.target?.classList?.add('active');
+    };
+
+    // Обработчики
+    if(unlockBtn) unlockBtn.addEventListener("click", grantAccess);
+    if(doTransferBtn) doTransferBtn.addEventListener("click", performTransfer);
+    document.getElementById("profileBtn")?.addEventListener("click", () => alert("👤 Оразалы Карабай Госманулы\nСтатус доступа: "+(isAccessGranted?"АКТИВИРОВАН":"НЕ АКТИВИРОВАН")));
+    if(accessInput) accessInput.addEventListener("keypress", (e) => { if(e.key === "Enter") grantAccess(); });
+    
+    updateBalanceUI();
+    renderTransactions();
+    console.log("✅ Банк готов. Код доступа знает только владелец, на сайте не отображается.");
+</script>
+</body>
+</html>
+```
